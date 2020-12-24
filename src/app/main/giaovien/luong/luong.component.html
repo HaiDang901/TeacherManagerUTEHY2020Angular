@@ -1,0 +1,199 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý Lương </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Lương </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <div class="nav-search">
+        <p class="pull-right no-margin">
+            <a (click)="showAdd()" class="btn btn-success btn-xs">
+                <i class="fa fa-plus"></i>&nbsp;Thêm Lương
+            </a>
+        </p>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content app-content">
+
+    <!-- Default box -->
+    <div class="card card-solid">
+        <div class="card-body pb-0">
+            <div class="row d-flex align-items-stretch">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="col-xs-12">
+                    <p-panel header="Tìm kiếm" [ngStyle]="{'margin-top': '2px', 'font-size': '15px'}">
+                        <form class="form-horizontal" role="form" [formGroup]="formsearch" (ngSubmit)="search()">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" style="font-size: 15px;"> Nhập Lương </label>
+                                <div class="col-sm-11">
+                                    <input formControlName="maLuong" type="text" placeholder="" style="font-size: 15px;padding: 10px;border: 1px solid #dee2e6;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"></label>
+                                <div class="col-sm-11">
+                                    <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </p-panel>
+                    <h3 style="margin-top: 50px;">Danh sách Lương </h3>
+                    <p-table selectionMode="single" [value]="dsl" styleClass="p-datatable-gridlines">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 70px; text-align: center;background: #343a40;color: white;">STT</th>
+                                <th style="width: 15%; text-align: left;background: #343a40;color: white;">Mã Bậc </th>
+                                <th style="text-align: left;background: #343a40;color: white;">Mức Lương </th>
+                                <th style="width: 20%; text-align: left;background: #343a40;color: white;">Mức Lương cơ Bản</th>
+                                <th style="width: 130px; text-align: left;background: #343a40;color: white;">Tổng Lương</th>
+                                <th style="width: 130px; text-align: left;background: #343a40;color: white;">Trạng Thái</th>
+                                <th style="width: 120px; text-align: left;background: #343a40;color: white;">Tác vụ</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-i="rowIndex">
+                            <tr>
+                                <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
+                                <!-- <td>{{ item.maPk }}</td> -->
+                                <td>{{ item.maBac }}</td>
+                                <!-- <td>{{ item.image }}</td> -->
+                                <td>{{ item.mucLuong | currency: 'VNĐ'}}</td>
+                                <td>{{ item.luongCb | currency: 'VNĐ' }}</td>
+
+                                <td>{{ item.luongPc + item.mucLuong | currency:'USD':'symbol' }}</td>
+                                <td>{{ item.status }}</td>
+                                <td class="action-col">
+                                    <div class="btn-group">
+                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="ChiTiet(item.maLuong)">
+                                        <i class="ace-icon fa fa-eye" style="color:rgb(40, 82, 218);"></i>
+                                      </button>
+                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="showEdit(item.maLuong)">
+                                        <i class="ace-icon fa fa-edit" style="color:rgb(40, 82, 218);"></i>
+                                      </button>
+                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="Delete(item.maLuong)">
+                                        <i class="ace-icon fa fa-trash" style="color:rgb(40, 82, 218);"></i>
+                                      </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <!-- PAGE CONTENT ENDS -->
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <nav aria-label="Contacts Page Navigation">
+                <ngb-pagination [collectionSize]="totalRecords" [pageSize]="pageSize" [(page)]="page" [maxSize]="10" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            </nav>
+        </div>
+        <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="isCreate">Thêm mới Lương</h4>
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="!isCreate">Sửa Lương</h4>
+                <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+            </div>
+            <div class="modal-body">
+                <form #formdata="ngForm" class="form-horizontal utehy-form" (ngSubmit)="save(formdata.value)" *ngIf="doneSetupForm">
+                    <div class="modal-body no-padding">
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Người Nhận </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="ngayNhan" placeholder=" " [(ngModel)]="doneSetupForm.ngayNhan" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Ngày Tăng(<span
+                    style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="ngayTang" [(ngModel)]="doneSetupForm.ngayTang">
+                                    <div *ngIf="submitted && f.ngayTang.errors" class="invalid-feedback">
+                                        <div *ngIf="f.ngayTang.errors.required">Ngày Tăng</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã Bậc Lương(<span
+                                style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="maBac" [(ngModel)]="doneSetupForm.ngayNhan" placeholder="  " />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mức Lương(<span
+                                style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="mucLuong" placeholder=" " [(ngModel)]="doneSetupForm.mucLuong" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Lương Cơ Bản(<span
+                                style="color: red;">*</span>) </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="luongCb" placeholder="   " [(ngModel)]="doneSetupForm.luongCb" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Lương Phụ Câp(<span
+                                style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="luongPc" placeholder="" [(ngModel)]="doneSetupForm.luongPc " />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <div class="col-sm-6 " style="float: left; ">
+                                <label class="col-sm-8 control-label no-padding-right "> Trạng Thái(<span
+                                style="color: red; ">*</span>)</label>
+                                <div class="col-sm-10 ">
+                                    <input type="number " name="status " placeholder=" " [(ngModel)]="doneSetupForm.status " />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer ">
+                        <button type="button " class="btn btn-default btn-sm " (click)="Reset() ">
+                          <i class="fa fa-bell "></i> Làm mới
+                        </button>
+                        <!-- <input type="submit " class="btn btn-success btn-sm btn-submit " value="save "> -->
+                        <button type="submit " class="btn btn-success btn-sm btn-submit ">
+                        <i class="fa fa-save "></i>save</button>
+                        <button type="button " class="btn btn-default btn-sm " (click)="lgModal.hide() " aria-label="Close ">
+                          <i class="fa fa-times "></i> Đóng lại
+                        </button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

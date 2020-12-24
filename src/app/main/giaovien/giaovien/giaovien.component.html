@@ -1,0 +1,322 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Cán Bộ Giáo Viên </h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Giáo Viên </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <div class="nav-search">
+        <p class="pull-right no-margin">
+            <a (click)="showAdd()" class="btn btn-success btn-xs">
+                <i class="fa fa-plus"></i>&nbsp;Thêm Giáo Viên
+            </a>
+        </p>
+    </div>
+</section>
+
+
+<!-- <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
+        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="p-mr-2 p-d-inline-block"></p-fileUpload>
+        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
+    </ng-template>
+</p-toolbar>
+
+<p-table #dt [value]="dscb" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" [(selection)]="selectedProducts" [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [showCurrentPageReport]="true">
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            <h5 class="p-m-0">Manage Products</h5>
+            <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
+          </span>
+        </div>
+    </ng-template> -->
+
+<!-- Main content -->
+<section class="content app-content">
+
+    <!-- Default box -->
+    <div class="card card-solid">
+        <div class="card-body pb-0">
+            <div class="row d-flex align-items-stretch">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="col-xs-12">
+                    <p-panel header="Tìm kiếm" [ngStyle]="{'margin-top': '2px', 'font-size': '15px'}">
+                        <form class="form-horizontal" role="form" [formGroup]="formsearch" (ngSubmit)="search()">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label no-padding-right" style="font-size: 15px;"> Mã Giáo Viên </label>
+                                <div class="col-sm-11">
+                                    <input formControlName="maCbgv" type="text" placeholder="Mã Giáo Viên" style="font-size: 15px;padding: 10px;border: 1px solid #dee2e6;" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label no-padding-right"></label>
+                                <div class="col-sm-11">
+                                    <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
+                                </div>
+                            </div>
+                        </form>
+                    </p-panel>
+                    <h3>Danh sách Giáo Viên </h3>
+                    <p-table selectionMode="single" [value]="dscb" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} tới {last} of {totalRecords} mục" [rowsPerPageOptions]="[10,20,30]">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 60px; text-align: center;background: #343a40;color: white;">STT</th>
+                                <th style="width: 17%; text-align: center;background: #343a40;color: white;">Họ Tên </th>
+                                <th style="width: 22%;text-align: center;background: #343a40;color: white;">Email </th>
+                                <th style="width: 13%; text-align: center;background: #343a40;color: white;">SĐT</th>
+                                <th style="width: 17%; text-align: center;background: #343a40;color: white;">Quê quán</th>
+                                <th style="width: 100px; text-align: center;background: #343a40;color: white;">Tác vụ</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-i="rowIndex">
+                            <tr>
+                                <td style="width: 60px; text-align: center;">{{ i + 1 }}</td>
+
+                                <td>{{ item.hoVaTen }}</td>
+                                <td>{{ item.email }}</td>
+                                <td>{{ item.dienThoai }}</td>
+                                <td>{{ item.queQuan }}</td>
+                                <td class="action-col">
+                                    <div class="btn-group">
+                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="ChiTiet(item.maCbgv)">
+                                            <i class="ace-icon fa fa-eye" style="color:rgb(40, 82, 218);"></i>
+                                        </button>
+                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="showEdit(item.maCbgv)">
+                                            <i class="ace-icon fa fa-edit" style="color:rgb(40, 82, 218);"></i>
+                                        </button>
+                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="Delete(item.maCbgv)">
+                                            <i class="ace-icon fa fa-trash" style="color:rgb(40, 82, 218);"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <!-- PAGE CONTENT ENDS -->
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <ng-template pTemplate="paginatorleft">
+                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+            </ng-template>
+        </div>
+        <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="isCreate">Chi tiết Giáo Viên</h4>
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="!isCreate">Sửa Giáo Viên</h4>
+                <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form #formdata="ngForm" class="form-horizontal utehy-form" (ngSubmit)="save(formdata.value)" *ngIf="doneSetupForm">
+                    <div class="modal-body no-padding">
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Người Tạo</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="nguoiTao" placeholder="Người tạo " [(ngModel)]="doneSetupForm.nguoiTao" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Ngày lập(<span style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="ngayTao" [(ngModel)]="doneSetupForm.ngayTao">
+                                    <div *ngIf="submitted && f.ngayTao.errors" class="invalid-feedback">
+                                        <div *ngIf="f.ngayTao.errors.required">Ngày lập</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right"> Kinh nghiệm</label>
+                            <div class="col-sm-12">
+                                <p-editor name="kinhNghiem" [(ngModel)]="doneSetupForm.kinhNghiem" [style]="{'height':'200px'}"></p-editor>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã giáo viên(<span
+                                  style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="hidden" name="hiddenID" [(ngModel)]="hiddenID" />
+                                    <input type="text" name="maCbgv" [(ngModel)]="doneSetupForm.maCbgv" placeholder="Mã giáo viên  " />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã phòng khoa(<span
+                                  style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="maPk" placeholder="Mã phòng khoa  " [(ngModel)]="doneSetupForm.maPk" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã bộ môn(<span
+                                  style="color: red;">*</span>) </label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="maBmtt" placeholder="Mã bộ môn   " [(ngModel)]="doneSetupForm.maBmtt" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã Ngạch Công Chức(<span
+                                  style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="maNgach" placeholder="Mã ngạch " [(ngModel)]="doneSetupForm.maNgach" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã Bậc Lương(<span
+                                  style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="maBac" placeholder="Mã bậc " [(ngModel)]="doneSetupForm.maBac" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Mã Trình Độ HV(<span
+                                  style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="maTdhv" placeholder="Mã trình độ " [(ngModel)]="doneSetupForm.maTdhv" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label no-padding-right">Họ Tên</label>
+                            <div class="col-sm-11">
+                                <input type="text" name="hoVaTen" placeholder="" [(ngModel)]="doneSetupForm.hoVaTen" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex">
+                            <div class="col-sm-5">
+                                <label class=""> Ngày Sinh(<span
+                                style="color: red;">*</span>)</label>
+                                <input type="datetime-local" name="ngaySinh" [(ngModel)]="doneSetupForm.ngaySinh">
+                                <div *ngIf="submitted && f.ngaySinh.errors" class="invalid-feedback">
+                                    <div *ngIf="f.ngaySinh.errors.required">Ngày Sinh</div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5" style="margin-left: 65px;">
+                                <label class="">Mật Khẩu(<span style="color: red;">*</span>)</label>
+                                <input type="password" name="matKhau" placeholder="******" [(ngModel)]="doneSetupForm.matKhau" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex">
+                            <div class="col-sm-5">
+                                <label class=""> Email </label>
+                                <input type="email" name="email" placeholder=" " [(ngModel)]="doneSetupForm.email" />
+                            </div>
+                            <div class="col-sm-5" style="margin-left: 65px;">
+                                <label class="">Điện Thoại </label>
+                                <input type="text" name="dienThoai" [(ngModel)]="doneSetupForm.dienThoai" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex">
+                            <div class="col-sm-5">
+                                <label class=""> Chức danh</label>
+                                <input type="text" name="chucDanh" placeholder=" " [(ngModel)]="doneSetupForm.chucDanh" />
+                            </div>
+
+                            <div class="col-sm-5" style="margin-left: 65px;">
+                                <label class="">Quyền</label>
+                                <input type="number" name="quyen" [(ngModel)]="doneSetupForm.quyen" />
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="display: flex">
+                            <div class="col-sm-5">
+                                <label class=""> Quê quán  </label>
+                                <input type="text" name="queQuan" placeholder=" " [(ngModel)]="doneSetupForm.queQuan" />
+                            </div>
+
+                            <div class="col-sm-5" style="margin-left: 65px;">
+                                <label class="">Dân Tộc  </label>
+                                <input type="text" name="danToc" [(ngModel)]="doneSetupForm.danToc" />
+                            </div>
+                        </div>
+                        <div class="form-group" style="display: flex">
+
+                            <div class="col-sm-5">
+                                <label class=""> Tôn Giáo </label>
+                                <input type="text" name="tonGiao" placeholder=" " [(ngModel)]="doneSetupForm.tonGiao" />
+                            </div>
+
+                            <div class="col-sm-5" style="margin-left: 65px;">
+                                <label class="">Trình Độ </label>
+                                <input type="text" name="trinhDo" [(ngModel)]="doneSetupForm.trinhDo" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-5" *ngIf="doneSetupForm.gioiTinh != 1">
+                                <label class="">Giới Tính </label>
+
+                                <input type="text" name="gioiTinh" value="NAM" />
+                            </div>
+                            <div class="col-sm-5" *ngIf="doneSetupForm.gioiTinh == 1">
+                                <label class="">Giới Tính </label>
+
+                                <input type="text" name="gioiTinh" value="NỮ" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" (click)="Reset()">
+                            <i class="fa fa-bell"></i> Làm mới
+                          </button>
+                        <!-- <input type="submit" class="btn btn-success btn-sm btn-submit" value="save"> -->
+                        <button type="submit" class="btn btn-success btn-sm btn-submit">
+                          <i class="fa fa-save"></i>save</button>
+                        <button type="button" class="btn btn-default btn-sm" (click)="lgModal.hide()" aria-label="Close">
+                            <i class="fa fa-times"></i> Đóng lại
+                          </button>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

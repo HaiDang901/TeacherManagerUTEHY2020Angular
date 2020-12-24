@@ -1,0 +1,191 @@
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Khen Thưởng </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+    <div class="nav-search">
+        <p class="pull-right no-margin">
+            <a (click)="showAdd()" class="btn btn-success btn-xs">
+                <i class="fa fa-plus"></i>&nbsp;Thêm mới
+            </a>
+        </p>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content app-content">
+    <!-- Default box -->
+    <div class="card card-solid">
+        <div class="card-body pb-0">
+            <div class="row d-flex align-items-stretch">
+                <!-- PAGE CONTENT BEGINS -->
+                <!-- styleClass="p-datatable-gridlines"
+                -->
+                <div class="col-xs-12">
+                    <h3>Danh sách Khen Thưởng </h3>
+                    <p-table selectionMode="single" #dt2 [columns]="cols" selectionMode="multiple" [(selection)]="selectedProducts" [value]="khenthuong" dataKey="maKtkl" [loading]="loading" styleClass="p-datatable-khenthuong" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+                        currentPageReportTemplate="Hiển thị {first} tới {last} of {totalRecords} mục" [globalFilterFields]="['tenKtkl','lyDo','ngayKt','hinhThuc','status']">
+                        <ng-template pTemplate="caption" class="p-d-flex">
+                            <div class="p-d-flex">
+                                <span class="p-input-icon-left p-ml-auto">
+                                      <i class="pi pi-search"></i>
+                                      <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                                  </span>
+                            </div>
+                            <div class="p-d-flex" style="float: right; margin-top: -50px">
+                                <button type="button" title="Xuất chọn lọc" style="width: 50px; height: 50px;" pButton pRipple icon="pi pi-file-o" (click)="dt2.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                                <button type="button" title="Xuất tất cả" style="width: 50px; height: 50px;" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+                                <button type="button" style="width: 50px; height: 50px;" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning p-mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 60px;text-align: center;background: #343a40;color: white;">STT</th>
+                                <th style="width: 20%;text-align: center;background: #343a40;color: white;">Tên</th>
+                                <th style="text-align: center;background: #343a40;color: white;width: 30%;">Lý Do</th>
+                                <th style="width: 11%;text-align: center;background: #343a40;color: white;">Ngày </th>
+                                <th style="width: 15%;text-align: center;background: #343a40;color: white;">Hình Thức </th>
+                                <th style="width: 10%;text-align: center;background: #343a40;color: white;">Trạng Thái</th>
+                                <th style="width: 11%;text-align: center;background: #343a40;color: white;">Tác vụ</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-i="rowIndex">
+                            <!-- <tr *ngFor="let item of list_bac_luong"> -->
+                            <tr>
+                                <td style="width: 60px; text-align: center;">{{ i + 1 }}</td>
+                                <td field="tenKtkl">{{ item.tenKtkl }}</td>
+                                <td field="lyDo">{{ item.lyDo }}</td>
+                                <td field="ngayKt">{{ item.ngayKt | date: 'MM/dd/yyyy' }}</td>
+                                <td field="hinhThuc">{{ item.hinhThuc }}</td>
+                                <td field="status" *ngIf="item.status == 1">
+                                    <label class="switch" style="pointer-events: none;left: 18px;">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                  </label>
+                                </td>
+                                <td field="status" *ngIf="item.status != 1">
+                                    <label class="switch" style="pointer-events: none;left: 18px;">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                  </label>
+                                </td>
+
+                                <td class="action-col">
+                                    <div class="btn-group">
+                                        <button title="Xem chi tiết" class="btn btn-xs btn-white btn-default" (click)="ChiTiet(item.maKtkl)">
+                                      <i class="ace-icon fa fa-eye" style="color:rgb(40, 82, 218);"></i>
+                                    </button>
+                                        <button title="Sửa " class="btn btn-xs btn-white btn-default" (click)="showEdit(item.maKtkl)">
+                                      <i class="ace-icon fa fa-edit" style="color:rgb(40, 82, 218);"></i>
+                                    </button>
+                                        <button title="Xóa" class="btn btn-xs btn-white btn-default" (click)="Delete(item.maKtkl)">
+                                      <i class="ace-icon fa fa-trash" style="color:rgb(40, 82, 218);"></i>
+                                    </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <!-- PAGE CONTENT ENDS -->
+                </div>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <ng-template pTemplate="paginatorleft">
+                <p-button type="button" icon="pi pi-plus" styleClass="p-button-text"></p-button>
+            </ng-template>
+            <ng-template pTemplate="paginatorright">
+                <p-button type="button" icon="pi pi-cloud" styleClass="p-button-text"></p-button>
+            </ng-template>
+        </div>
+        <!-- /.card-footer -->
+    </div>
+    <!-- /.card -->
+
+</section>
+<div bsModal #lgModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="dialog-sizes-name1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="isCreate">Thông tin chi tiết</h4>
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="!isCreate">Sửa thông tin</h4>
+                <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+            </div>
+            <div class="modal-body">
+                <form #formdata="ngForm" class="form-horizontal utehy-form" (ngSubmit)="save(formdata.value)" *ngIf="doneSetupForm">
+                    <div class="modal-body no-padding">
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Tiêu Đề(<span style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="tenKtkl" placeholder="" [(ngModel)]="doneSetupForm.tenKtkl" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Ngày áp dụng(<span style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="datetime-local" name="ngayKt" [(ngModel)]="doneSetupForm.ngayKt">
+                                    <div *ngIf="submitted && f.ngayKt.errors" class="invalid-feedback">
+                                        <div *ngIf="f.ngayKT.errors.required">Ngày áp dụng</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Lý do</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="lyDo" placeholder="  " [(ngModel)]="doneSetupForm.lyDo" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Ghi Chú</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="ghiChu" placeholder="" [(ngModel)]="doneSetupForm.ghiChu" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Hình thức</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="hinhThuc" placeholder="vd..Trao bằng khen," [(ngModel)]="doneSetupForm.hinhThuc" />
+                                </div>
+                            </div>
+                            <div class="col-sm-6" style="float: left;">
+                                <label class="col-sm-8 control-label no-padding-right"> Trạng Thái(<span
+                              style="color: red;">*</span>)</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="status" placeholder="" [(ngModel)]="doneSetupForm.status" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" (click)="Reset()">
+                        <i class="fa fa-bell"></i> Làm mới
+                      </button>
+                        <button type="submit" class="btn btn-success btn-sm btn-submit">
+                      <i class="fa fa-save"></i>save</button>
+                        <button type="button" class="btn btn-default btn-sm" (click)="lgModal.hide()" aria-label="Close">
+                        <i class="fa fa-times"></i> Đóng lại
+                      </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
