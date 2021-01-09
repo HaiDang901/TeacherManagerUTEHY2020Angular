@@ -30,6 +30,7 @@
             <div class="row d-flex align-items-stretch">
                 <!-- PAGE CONTENT BEGINS -->
                 <!-- styleClass="p-datatable-gridlines"
+                  [rowsPerPageOptions]="[5,10,15]"
                 -->
                 <div class="col-xs-12">
                     <h3>Danh sách Khen Thưởng </h3>
@@ -131,8 +132,10 @@
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Tiêu Đề(<span style="color: red;">*</span>)</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="tenKtkl" placeholder="" [(ngModel)]="doneSetupForm.tenKtkl" />
+                                    <input type="text" name="tenKtkl" class="form-control" placeholder="" [(ngModel)]="doneSetupForm.tenKtkl" required="" />
+
                                 </div>
+
                             </div>
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Ngày áp dụng(<span style="color: red;">*</span>)</label>
@@ -184,6 +187,7 @@
                         <i class="fa fa-times"></i> Đóng lại
                       </button>
                     </div>
+
                 </form>
             </div>
         </div>

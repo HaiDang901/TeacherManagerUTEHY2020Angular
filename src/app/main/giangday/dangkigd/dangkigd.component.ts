@@ -27,6 +27,8 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
 
   @ViewChild('lgModal') public lgModal: ModalDirective;
   public dangkilichs: any;
+  public dscanbo: any;
+  public dscanbos: any;
   public totalRecords: any;
   public pageSize = 3;
   public page = 1;
@@ -37,6 +39,8 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
   public showUpdateModal: any;
   public isCreate: any;
   public hiddenID: number;
+  public hoVaTen: any;
+  public ListDangKi:any;
   selectedProducts: dangkilich[];
   statuses: any[];
   loading: boolean = true;
@@ -54,11 +58,23 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
   cols: any[];
   exportColumns: any[];
 
+
+  getdscanbo1() {
+    this._api.get('/api/DkgiangDays').subscribe(res=> {
+      this.dscanbo = res;
+      console.log(res);
+    });
+  }
   getdsGD() {
     this.coreService.getdsGD().subscribe((update) => {
     this.dangkilich = update;
+    this.ListDangKi=this.dangkilich;
     console.log(this.dangkilich);
     });
+  }
+  ChangePK(val)
+  {
+    this.ListDangKi=this.dangkilich.filter(s=> s.maCbgv==val);
   }
   showAdd() {
     this.isCreate= true;
@@ -68,7 +84,9 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
     }
 
   ngOnInit(): void {
+    this.getdscanbo1();
     this.getdsGD();
+
     this.coreService.getCustomersLargeLD().then(customers => {
       this.dangkilich = customers;
       this.loading = false;
@@ -80,7 +98,7 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
     });
 
     this.formsearch = this.fb.group({
-      'maCbgv': [''],
+      'hoVaTen': [''],
       'maHp': [''],
       'ngayDk': [''],
       'ghiChu': [''],
@@ -90,11 +108,11 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
     this.search();
     this.coreService.getCustomersSmallLD().then(data => this.dangkilich = data);
     this.cols = [
-        { field: 'maCbgv', header: 'Tên GV' },
-        { field: 'maHp', header: 'Học phần' },
-        { field: 'ngayDk', header: 'Ngày đăng kí' },
-        { field: 'ghiChu', header: 'Ghi chú' },
-        { field: 'status', header: 'Trạng thái' }
+        { field: 'hoVaTen', header: 'TEN GIAO VIEN' },
+        { field: 'maHp', header: 'HOC PHAN' },
+        { field: 'ngayDk', header: 'NGAY DANG KY' },
+        { field: 'ghiChu', header: 'GHU CHU' },
+        { field: 'status', header: 'TRANG THAI' }
     ];
     this.exportColumns = this.cols.map(item => ({title: item.header, dataKey: item.field}));
     }
@@ -154,11 +172,13 @@ export class DangkigdComponent extends BaseComponent implements OnInit  {
     showEdit(id: any){
       this.isCreate = false;
       this.hiddenID = 1;
+
       this.coreService.getbyidGD(id).subscribe(res =>{
         this.doneSetupForm = res;
       });
       this.lgModal.show();
     }
+
     save(val: dangkilich) {
       console.log(val);
       if (this.hiddenID == 0) {

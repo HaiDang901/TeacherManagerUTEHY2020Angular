@@ -8,7 +8,6 @@ import { BaseComponent } from '../../../lib/base-component';
 import 'rxjs/add/operator/takeUntil';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { TutorialService } from 'src/app/lib/tutorial.service';
-
 import { AuthenticationService } from 'src/app/lib/authentication.service';
 import { FormControl, FormGroup} from '@angular/forms'
 import { Observable } from 'rxjs/Observable'
@@ -29,6 +28,9 @@ export class BomonComponent extends BaseComponent implements OnInit {
 
   @ViewChild('lgModal') public lgModal: ModalDirective;
   public dsbomons: any;
+  public dsphongkhoas: any;
+  public dsphongkhoa: any;
+
   public totalRecords: any;
   public pageSize = 3;
   public page = 1;
@@ -39,32 +41,49 @@ export class BomonComponent extends BaseComponent implements OnInit {
   public showUpdateModal: any;
   public isCreate: any;
   public hiddenID: number;
+  public tenPhongKhoa: any;
+  public ListBoMon:any;
   submitted = false;
   selectedProducts: dsbomon[];
   statuses: any[];
   loading: boolean = true;
   activityValues: number[] = [0, 100];
+  selectedState: any = null;
+  active : any;
 // ----------------------------//
   first = 0;
-
   rows = 5;
 
 
   @ViewChild(FileUpload, { static: false }) file_image: FileUpload;
-
   @ViewChild('htmlData') htmlData:ElementRef;
   constructor(private fb: FormBuilder, injector: Injector, private messageService: MessageService, private confirmationService: ConfirmationService, private coreService: CoreService) {
     super(injector);
   }
 
    dsbomon: dsbomon[];
+  //  dsphongkhoa : dsphongkhoa[];
    cols: any[];
    exportColumns: any[];
+
+   getdsphong(){
+    // this.coreService.getdsphong().subscribe((update)=>{
+    //   this.dsphongkhoas = update;
+    //   console.log(update);
+    // });
+    this._api.get('/api/PhongKhoas').subscribe(res=>
+      {
+        this.dsphongkhoa = res;
+        console.log(res);
+      });
+  }
 
     getdsbomon(){
       this.coreService.getdsbomon().subscribe((update)=>{
         this.dsbomon = update;
+        this.ListBoMon=this.dsbomon;
         console.log(this.dsbomon);
+
       });
     }
     showAdd() {
@@ -76,26 +95,33 @@ export class BomonComponent extends BaseComponent implements OnInit {
     ngOnInit(): void {
 
       this.getdsbomon();
+      this.getdsphong();
+
       this.coreService.getCustomersLarge().then(customers => {
         this.dsbomon = customers;
         this.loading = false;
+
         this.dsbomon.forEach(
           dsbomon => (dsbomon.ngayTao = new Date(dsbomon.ngayTao))
         );
       });
 
       this.formsearch = this.fb.group({
-        'maBmtt': ['']
+        'maBmtt': [''],
+        'maPk':[''],
+        'tenPhongKhoa': [''],
+        'tenBmtt': ['']
       });
-      // this.search();
-      // this.coreService.getCustomersLarge().then(customers => this.dsbomons = customers);
+      this.search();
+      this.coreService.getCustomersLarge().then(customers => this.dsbomons = customers);
       this.search();
       this.coreService.getCustomersSmall().then(data => this.dsbomon = data);
 
       this.cols = [
-          { field: 'tenBmtt', header: 'Tên Bộ Môn ' },
-          { field: 'diaChi', header: 'Địa Chỉ ' },
-          { field: 'soLuongNhanSu', header: 'SL Nhân Sự' },
+          { field: 'tenPhongKhoa', header: 'TEN PHONG KHOA ' },
+          { field: 'tenBmtt', header: 'TEN BO MON ' },
+          { field: 'diaChi', header: 'DIA CHI ' },
+          { field: 'soLuongNhanSu', header: 'SL NHAN SU' },
       ];
       this.exportColumns = this.cols.map(item => ({title: item.header, dataKey: item.field}));
     }
@@ -151,14 +177,6 @@ export class BomonComponent extends BaseComponent implements OnInit {
     }
 
     search() {
-      // this.page = 1;
-      // this.pageSize = 5;
-      // this._api.post('/api/BoMonTrungTams/searchBM/',{page: this.page, pageSize: this.pageSize, maCbgv: this.formsearch.get('maBmtt').value}).takeUntil(this.unsubscribe).subscribe(res => {
-      //   this.dsbomons = res.data;
-      //   this.totalRecords =  res.totalItems;
-      //   this.pageSize = res.pageSize;
-      //   });
-
         this._core.get('/api/BoMonTrungTams').takeUntil(this.unsubscribe).subscribe(res => {
           this.dsbomons = res;
         });
@@ -177,7 +195,7 @@ export class BomonComponent extends BaseComponent implements OnInit {
       console.log(val);
       if (this.hiddenID == 0) {
         this.coreService.postbomon(val).subscribe(res => {
-          alert("Them thanh cong!");
+          alert("Thêm thành công!");
           this.lgModal.hide();
           this.getdsbomon();
         });
@@ -207,127 +225,11 @@ export class BomonComponent extends BaseComponent implements OnInit {
       }
 
     }
-
-
-
-  onSubmit(value) {
-    this.submitted = true;
-    if (this.formdata.invalid) {
-      return;
+    Reset(){
+      this.doneSetupForm ={};
     }
-    if(this.isCreate) {
-        this.getEncodeFromImage(this.file_image).subscribe((data: any): void => {
-        let data_image = data == '' ? null : data;
-        let tmp = {
-            nguoiTao:value.nguoiTao,
-            ngayTao: +value.ngayTao,
-            maPk   : value.maPk    ,
-            maBmtt   : value.maBmtt  ,
-            tenBmtt: value.tenBmtt,
-            soLuongNhanSu: +value.soLuongNhanSu,
-            phanLoai: +value.phanLoai,
-            diaChi: value.diaChi,
-            dienThoai: value.dienThoai,
-            email : value.email,
-            website: value.website,
-            ghiChu: value.ghiChu,
-            };
-          this._api.post('/api/BoMonTrungTams/createBM',tmp).takeUntil(this.unsubscribe).subscribe(res => {
-            alert('Thêm thành công');
-            this.search();
-            this.closeModal();
-            });
-        });
-      }
-  }
-
-  Reset() {
-    // this.dsbomon = null;
-    this.formdata = this.fb.group({
-
-            'nguoiTao':     [''],
-            'ngayTao':      [this.today, Validators.required],
-            'maPk'   :  [''],
-            'maBmtt'     : [''],
-            'tenBmtt':   [''],
-            'soLuongNhanSu':   [''],
-            'phanLoai':   [''],
-            'diaChi':  [''],
-            'dienThoai':  [''],
-            'email' :   [''],
-            'website':  [''],
-            'ghiChu':     [''],
-    });
-  }
-
-  createModal() {
-    debugger
-    this.doneSetupForm = false;
-    this.showUpdateModal = true;
-    this.isCreate = true;
-    // this.dsbomon = null;
-    setTimeout(() => {
-      $('#createBoMonModal').modal('toggle');
-      this.formdata = this.fb.group({
-        'nguoiTao':     [''],
-        'ngayTao':      [this.today, Validators.required],
-        'maPk'   :  [''],
-        'maBmtt'     : [''],
-        'tenBmtt':   [''],
-        'soLuongNhanSu':   [''],
-        'phanLoai':   [''],
-        'diaChi':  [''],
-        'dienThoai':  [''],
-        'email' :   [''],
-        'website':  [''],
-        'ghiChu':     [''],
-      });
-      this.formdata.get('ngayTao').setValue(this.today);
-      this.doneSetupForm = true;
-    });
-  }
-
-  public openUpdateModal(row) {
-    this.doneSetupForm = false;
-    this.showUpdateModal = true;
-    this.isCreate = false;
-    setTimeout(() => {
-      $('#createBoMonModal').modal('toggle');
-      this._api.get('/api/BoMonTrungTams/get-by-id/'+ row.maBmtt).takeUntil(this.unsubscribe).subscribe((res:any) => {
-        // this.dsbomon = res;
-        // let ngayTao = new Date(this.dsbomon.ngayTao);
-          this.formdata = this.fb.group({
-            // 'nguoiTao':     ['NguoiTao'],
-            // 'ngayTao':      [ngayTao, Validators.required],
-            // 'kinhNghiem':   ['this.dscanbo.kinhNghiem'],
-            // 'maCbgv' :      ['this.dscanbo.maCbgv'],
-            // 'maPk'  :       ['this.dscanbo.maPk'],
-            // 'maBmtt'   :    ['this.dscanbo.maBmtt'],
-            // 'maNgach'   :   ['this.dscanbo.maNgach'],
-            // 'maBac'   :     ['this.dscanbo.maBac'],
-            // 'maTdhv'   :    ['this.dscanbo.maTdhv'],
-            // 'maKtkl'   :    ['this.dscanbo.maKtkl'],
-            // 'hoVaTen' :     ['this.dscanbo.hoVaTen'],
-            // 'ngaySinh' :    [ngaySinh, Validators.required],
-            // 'gioiTinh' :    ['this.dscanbo.gioiTinh'],
-            // 'matKhau' :     ['this.dscanbo.matKhau'],
-            // 'email':        ['this.dscanbo.email'],
-            // 'soTaiKhoan' :  ['this.dscanbo.soTaiKhoan'],
-            // 'dienThoai':    ['this.dscanbo.dienThoai'],
-            // 'chucDanh':     ['this.dscanbo.chucDanh'],
-            // 'status':       ['this.dscanbo.status'],
-            // 'quyen':        ['this.dscanbo.quyen'],
-            // 'queQuan':      ['this.dscanbo.queQuan'],
-            // 'danToc':       ['this.dscanbo.danToc'],
-            // 'tonGiao':      ['this.dscanbo.tonGiao'],
-            // 'trinhDo':      ['this.dscanbo.trinhDo'],
-          });
-          this.doneSetupForm = true;
-        });
-    }, 700);
-  }
-
-  closeModal() {
-    $('#createBoMonModal').closest('.modal').modal('hide');
-  }
+    ChangePK(val)
+    {
+      this.ListBoMon=this.dsbomon.filter(s=> s.maPk==val);
+    }
 }

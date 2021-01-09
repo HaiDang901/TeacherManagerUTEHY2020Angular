@@ -11,6 +11,15 @@ import { CoreService } from './../../../lib/core.service';
 import { ConfirmationService } from 'primeng/api';
 import { dsbacluong, dscanbo, dsbomon, khenthuong} from '../../../model/danhsach';
 import { MessageService } from 'primeng/api';
+import { AuthenticationService } from 'src/app/lib/authentication.service';
+import { FormControl, FormGroup} from '@angular/forms'
+import { Observable } from 'rxjs/Observable'
+import { DatePipe } from '@angular/common';
+import { jsPDF} from 'jspdf';
+import { autoTable} from 'jspdf-autotable';
+import { giaoviencn } from './../../../model/danhsach';
+import { TutorialService } from 'src/app/lib/tutorial.service';
+
 declare var $: any;
 @Component({
   selector: 'app-phongkhoa',
@@ -20,7 +29,6 @@ declare var $: any;
 export class PhongkhoaComponent extends BaseComponent implements OnInit {
   @ViewChild('lgModal') public lgModal: ModalDirective;
   public dsphongkhoas: any;
-  // public dsphongkhoa: any;
   public totalRecords: any;
   public pageSize = 3;
   public page = 1;
@@ -31,6 +39,7 @@ export class PhongkhoaComponent extends BaseComponent implements OnInit {
   public showUpdateModal: any;
   public isCreate: any;
   public hiddenID: number;
+  public ListDangKi:any;
   submitted = false;
   selectedProducts: dsphongkhoa[];
   statuses: any[];
@@ -39,19 +48,19 @@ export class PhongkhoaComponent extends BaseComponent implements OnInit {
   first = 0;
   rows = 5;
 
-  @ViewChild('htmlData') htmlData:ElementRef;
   @ViewChild(FileUpload, { static: false }) file_image: FileUpload;
-  constructor(private apiService: ApiService, private fb: FormBuilder, injector: Injector, private messageService: MessageService, private confirmationService: ConfirmationService, private coreService: CoreService) {
+  @ViewChild('htmlData') htmlData:ElementRef;
+  constructor(private fb: FormBuilder, injector: Injector, private messageService: MessageService, private confirmationService: ConfirmationService, private coreService: CoreService) {
     super(injector);
   }
-dsphongkhoa: dsphongkhoa[];
+  dsphongkhoa: dsphongkhoa[];
   cols: any[];
   exportColumns: any[];
-
       getdsphong(){
         this.coreService.getdsphong().subscribe((update)=>{
-          this.dsphongkhoa = update;
-          console.log(this.dsphongkhoa);
+          this.dsphongkhoas = update;
+          this.ListDangKi = this.dsphongkhoas;
+          console.log(this.dsphongkhoas);
         });
       }
       showAdd() {
@@ -60,12 +69,11 @@ dsphongkhoa: dsphongkhoa[];
         this.doneSetupForm = {};
         this.lgModal.show();
       }
-
-
-  ngOnInit(): void {
+    ngOnInit(): void {
     this.getdsphong();
+
     this.coreService.getCustomersLargePB().then(customers => {
-      this.dsphongkhoa = customers;
+      this.dsphongkhoas = customers;
       this.loading = false;
 
       this.dsphongkhoa.forEach(
@@ -77,15 +85,15 @@ dsphongkhoa: dsphongkhoa[];
       'maPK': ['']
     });
     this.search();
-    this.coreService.getCustomersLargePB().then(customers => this.dsphongkhoas = customers);
+    this.coreService.getCustomersLargePB().then(customers => this.dsphongkhoa = customers);
     this.search();
-    this.coreService.getCustomersSmallPB().then(data => this.dsphongkhoa = data);
+    this.coreService.getCustomersSmallPB().then(data => this.dsphongkhoas = data);
 
     this.cols = [
-      { field: 'tenPhongKhoa', header: 'Tên Khoa' },
-      { field: 'soLuongNhanSu', header: 'Nhân Sự' },
-      { field: 'dienThoai', header: 'SĐT' },
-      { field: 'email', header: 'Email' },
+      { field: 'tenPhongKhoa', header: 'TEN KHOA' },
+      { field: 'soLuongNhanSu', header: 'NHAN SU' },
+      { field: 'dienThoai', header: 'SO DIEN THOAI' },
+      { field: 'email', header: 'EMAIL' },
   ];
 
   this.exportColumns = this.cols.map(item => ({title: item.header, dataKey: item.field}));
@@ -136,13 +144,6 @@ dsphongkhoa: dsphongkhoa[];
       });
   }
   search() {
-    // this.page = 1;
-    // this.pageSize = 5;
-    // this._api.post('/api/phieuthu/searchphieuthu',{page: this.page, pageSize: this.pageSize, MaGiaoDich: this.formsearch.get('maPk').value}).takeUntil(this.unsubscribe).subscribe(res => {
-    //   this.dsphongkhoas = res.data;
-    //   this.totalRecords =  res.totalItems;
-    //   this.pageSize = res.pageSize;
-    //   });
     this._core.get('/api/PhongKhoas').takeUntil(this.unsubscribe).subscribe(res => {
       this.dsphongkhoas = res;
     });
@@ -158,10 +159,10 @@ dsphongkhoa: dsphongkhoa[];
     });
     this.lgModal.show();
     }
-    save(val: dsphongkhoa) {
-    console.log(val);
-      if (this.hiddenID == 0) {
 
+    save(val: dsphongkhoa) {
+      console.log(val);
+      if (this.hiddenID == 0) {
         this.coreService.postphong(val).subscribe(res => {
           alert("Them thanh cong!");
           this.lgModal.hide();
@@ -192,64 +193,7 @@ dsphongkhoa: dsphongkhoa[];
         });
       }
     }
-
-
-
-  // onSubmit(value) {
-  //   this.submitted = true;
-  //   if (this.formdata.invalid) {
-  //     return;
-  //   }
-  // }
-
   Reset() {
-    // this.dsphongkhoas = null;
-    // this.formdata = this.fb.group({});
     this.doneSetupForm ={};
   }
-
-  // createModal() {
-  //   debugger
-  //   this.doneSetupForm = false;
-  //   this.showUpdateModal = true;
-  //   this.isCreate = true;
-  //   this.dsphongkhoas = null;
-  //   setTimeout(() => {
-  //     $('#createPhieuThuModal').modal('toggle');
-  //     this.formdata = this.fb.group({
-  //       'Ngay': ['', Validators.required],
-  //       'NamTaiKhoa': [''],
-  //       'MoTa': [''],
-  //       'NguoiThu': [''],
-  //       'MaNguoiThu': [''],
-  //       'TongTien': [''],
-  //       'HoaDonDienTu': [''],
-  //       'GhiChu': [''],
-  //     });
-  //     this.formdata.get('Ngay').setValue(this.today);
-  //     this.formdata.get('HoaDonDienTu').setValue(this.hddt[0].value);
-  //     this.doneSetupForm = true;
-  //   });
-  // }
-
-  // public openUpdateModal(row) {
-  //   this.doneSetupForm = false;
-  //   this.showUpdateModal = true;
-  //   this.isCreate = false;
-  //   setTimeout(() => {
-  //     $('#createPhieuThuModal').modal('toggle');
-  //     this._api.get('/api/phieuthu/get-by-id/'+ row.maPhieuThu).takeUntil(this.unsubscribe).subscribe((res:any) => {
-  //       this.dsphongkhoas = res;
-  //       let Ngay = new Date(this.dsphongkhoas.ngay);
-  //         this.formdata = this.fb.group({
-
-  //         });
-  //         this.doneSetupForm = true;
-  //       });
-  //   }, 700);
-  // }
-
-  // closeModal() {
-  //   $('#createPhieuThuModal').closest('.modal').modal('hide');
-  // }
 }

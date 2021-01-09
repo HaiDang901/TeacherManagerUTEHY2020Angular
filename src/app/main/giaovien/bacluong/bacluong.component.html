@@ -34,24 +34,35 @@
                     <p-table selectionMode="single" [value]="dsbacluongs" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} tới {last} of {totalRecords} mục">
                         <ng-template pTemplate="header">
                             <tr>
-                                <th style="width: 70px; text-align: center;background: #343a40;color: white;">STT</th>
-                                <th style="width: 15%; text-align: left;background: #343a40;color: white;">Tên Bậc Lương </th>
-                                <th style="text-align: left;background: #343a40;color: white;">Hệ Số Lương</th>
-                                <th style="width: 20%; text-align: left;background: #343a40;color: white;">Nhóm Bậc </th>
-                                <th style="width: 20%; text-align: left;background: #343a40;color: white;">Người Tạo </th>
-                                <th style="width: 130px; text-align: left;background: #343a40;color: white;">Trạng Thái</th>
-                                <th style="width: 120px; text-align: left;background: #343a40;color: white;">Tác vụ</th>
+                                <th style="width: 60px; text-align: center;background: #343a40;color: white;">STT</th>
+                                <th style="width: 13%; text-align: center;background: #343a40;color: white;">Tên Bậc Lương </th>
+                                <th style="width: 13%; text-align: center;background: #343a40;color: white;">Hệ Số Lương</th>
+                                <th style="width: 32%; text-align: center;background: #343a40;color: white;">Nhóm Bậc </th>
+                                <th style="width: 13%; text-align: center;background: #343a40;color: white;">Người Tạo </th>
+                                <th style="width: 110px; text-align: center;background: #343a40;color: white;">Trạng Thái</th>
+                                <th style="width: 125px; text-align: center;background: #343a40;color: white;">Tác vụ</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-item let-i="rowIndex">
                             <!-- <tr *ngFor="let item of list_bac_luong"> -->
                             <tr>
                                 <td style="width: 70px; text-align: center;">{{ i + 1 }}</td>
-                                <td>{{ item.tenBac }}</td>
-                                <td>{{ item.heSoBacLg }}</td>
+                                <td style="text-align: center">{{ item.tenBac }}</td>
+                                <td style="text-align: center">{{ item.heSoBacLg }}</td>
                                 <td>{{ item.nhomBac }}</td>
-                                <td>{{ item.nguoiTao }}</td>
-                                <td>{{ item.status }}</td>
+                                <td style="text-align: center">{{ item.nguoiTao }}</td>
+                                <td field="status" *ngIf="item.status == 1">
+                                    <label class="switch" style="pointer-events: none;left: 18px;">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                  </label>
+                                </td>
+                                <td field="status" *ngIf="item.status != 1">
+                                    <label class="switch" style="pointer-events: none;left: 18px;">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                  </label>
+                                </td>
                                 <td class="action-col">
                                     <div class="btn-group">
                                         <button title="" class="btn btn-xs btn-white btn-default" (click)="ChiTiet(item.maBac)">

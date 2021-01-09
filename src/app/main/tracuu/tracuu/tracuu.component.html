@@ -1,0 +1,208 @@
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0 text-dark">TRA CỨU</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                    <li class="breadcrumb-item active">TRA CỨU</li>
+                </ol>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+</div>
+<section class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-lg-4">
+                <label for="">NHẬP KHOA</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+
+            <input type="checkbox">
+          </span>
+                    </div>
+                    <input type="text" class="form-control" #tenPhongKhoa placeholder="Khoa Công Nghệ Thông Tin">
+                </div>
+                <!-- /input-group -->
+            </div>
+            <div class="col-lg-4">
+                <label for="">NHẬP BỘ MÔN</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+
+              <input type="checkbox">
+            </span>
+                    </div>
+                    <input type="text" class="form-control" #tenBmtt placeholder="Công Nghệ Phần Mềm">
+                </div>
+                <!-- /input-group -->
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>CHỌN PHÁI</label>
+                    <select class="custom-select" #gioiTinh>
+                      <option selected >  Nữ  </option>
+                      <option  >  Nam  </option>
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" (click)='onlick(tenPhongKhoa.value,tenBmtt.value,gioiTinh.value)' class="btn btn-block btn-warning">TRA CỨU</button>
+        </div>
+        <br>
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Danh sách</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="example1" class="table table-bordered table-striped dataTable dtr-inline" role="grid" aria-describedby="example1_info">
+                                    <thead>
+                                        <tr role="row">
+                                            <th style="text-align: center;" style="text-align: center;" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Họ Và Tên </th>
+                                            <th style="text-align: center;" tabindex="0" aria-controls="example1" rowspan="1" colspan="1"> Khoa</th>
+                                            <th style="text-align: center;" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Bộ Môn</th>
+                                            <th style="text-align: center;" tabindex="0" aria-controls="example1" rowspan="1" colspan="1">Trạng Thái</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <tr>
+                                            <td style="text-align: center;">NCS. Lê Thị Thu Hương</td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Công Nghệ Phần Mềm </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                              <input type="checkbox" checked>
+                                              <span class="slider round"></span>
+                                            </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">ThS. Trịnh Thị Nhị </td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Công Nghệ Phần Mềm </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                            <input type="checkbox" checked>
+                                            <span class="slider round"></span>
+                                          </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">ThS. Nguyễn Hoàng Điệp </td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Công Nghệ Phần Mềm </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                          <input type="checkbox" checked>
+                                          <span class="slider round"></span>
+                                        </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">ThS. Đỗ Thị Thu TRang</td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Công Nghệ Phần Mềm </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                              <input type="checkbox" checked>
+                                              <span class="slider round"></span>
+                                            </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">ThS. Trần Đỗ Thu Hà </td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Công Nghệ Phần Mềm </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                                  <input type="checkbox" checked>
+                                                  <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;">ThS. Nguyễn Thị Thanh Huệ </td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Mạng Máy Tính</td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                                  <input type="checkbox" checked>
+                                                  <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;"> ThS. Đặng Vân Anh </td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Mạng Máy Tính </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                                  <input type="checkbox" checked>
+                                                  <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align: center;"> CN. Võ Thị Thanh Mai </td>
+                                            <td style="text-align: center;">Công Nghệ Thông Tin</td>
+                                            <td style="text-align: center;">Công Nghệ Phần Mềm </td>
+                                            <td style="text-align: center;">
+                                                <label class="switch" style="pointer-events: none;left: 18px;">
+                                                  <input type="checkbox" checked>
+                                                  <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-md-5">
+                                <div class="dataTables_info" id="example1_info" role="status" aria-live="polite">Showing 1 to 8 of 10 entries</div>
+                            </div>
+                            <div class="col-sm-12 col-md-7">
+                                <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                                    <ul class="pagination">
+                                        <li class="paginate_button page-item previous disabled" id="example1_previous">
+                                            <a href="#" aria-controls="example1" data-dt-idx="0" tabindex="0" class="page-link">Previous</a>
+                                        </li>
+                                        <li class="paginate_button page-item active"><a href="#" aria-controls="example1" data-dt-idx="1" tabindex="0" class="page-link">1</a></li>
+                                        <li class="paginate_button page-item "><a href="#" aria-controls="example1" data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+                                        <li class="paginate_button page-item next" id="example1_next"><a href="#" aria-controls="example1" data-dt-idx="4" tabindex="0" class="page-link">Next</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.card-body -->
+            </div>
+
+
+        </div>
+
+
+
+    </div>
+</section>

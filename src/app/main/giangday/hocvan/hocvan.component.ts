@@ -92,12 +92,12 @@ showAdd() {
     this.search();
     this.coreService.getCustomersSmallHV().then(data => this.trinhdo = data);
     this.cols = [
-        { field: 'tenHocVan', header: 'Trình Độ' },
-        { field: 'chungChi', header: 'Chứng Chỉ' },
-        { field: 'chuyenNganhDaoTao', header: 'Chuyên Ngành' },
-        { field: 'donViCt', header: 'Đơn Vị' },
-        { field: 'tdngoaiNgu', header: 'Ngoại Ngữ' },
-        { field: 'status', header: 'Trạng Thái' }
+        { field: 'tenHocVan', header: 'TRINH DO' },
+        { field: 'chungChi', header: 'CHUNG CHI' },
+        { field: 'chuyenNganhDaoTao', header: 'CHUYEN NGANH' },
+        { field: 'donViCt', header: 'DON VI' },
+        { field: 'tdngoaiNgu', header: 'NGOAI NGU' },
+        { field: 'status', header: 'TRANG THAI' }
     ];
     this.exportColumns = this.cols.map(item => ({title: item.header, dataKey: item.field}));
     }

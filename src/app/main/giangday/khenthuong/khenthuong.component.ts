@@ -17,8 +17,6 @@ import { MessageService } from 'primeng/api';
 import { jsPDF} from 'jspdf';
 import { autoTable} from 'jspdf-autotable';
 
-
-
 declare var $: any;
 @Component({
   selector: 'app-khenthuong',
@@ -26,6 +24,7 @@ declare var $: any;
   styleUrls: ['./khenthuong.component.css']
 })
 export class KhenthuongComponent extends BaseComponent implements OnInit {
+
 
   @ViewChild('lgModal') public lgModal: ModalDirective;
   public khenthuongs: any;
@@ -44,13 +43,15 @@ export class KhenthuongComponent extends BaseComponent implements OnInit {
   statuses: any[];
   loading: boolean = true;
   activityValues: number[] = [0, 100];
-
   first = 0;
   rows = 5;
   @ViewChild(FileUpload, { static: false }) file_image: FileUpload;
-
   @ViewChild('htmlData') htmlData:ElementRef;
-  constructor(private fb: FormBuilder, injector: Injector, private messageService: MessageService, private confirmationService: ConfirmationService, private coreService: CoreService) {
+  constructor(private fb: FormBuilder,
+    injector: Injector,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
+    private coreService: CoreService) {
     super(injector);
   }
   khenthuong: khenthuong[];
@@ -74,7 +75,6 @@ export class KhenthuongComponent extends BaseComponent implements OnInit {
       //   this.coreService.get("/api/KhenThuongKiLuats").takeUntil(this.unsubscribe).subscribe(res=>{
       //   this.khenthuongs = res;
       // });
-
       this.coreService.getCustomersLargeKT().then(customers => {
         this.khenthuong = customers;
         this.loading = false;
@@ -84,29 +84,26 @@ export class KhenthuongComponent extends BaseComponent implements OnInit {
         );
       });
 
+
       this.formsearch = this.fb.group({
         'maKtkl': ['']
       });
       this.search();
       this.coreService.getCustomersLargeKT().then(customers => this.khenthuongs = customers);
       this.search();
-
       this.coreService.getCustomersSmallKT().then(data => this.khenthuong = data);
-
       this.cols = [
-          { field: 'tenKtkl', header: 'Tên' },
-          { field: 'lyDo', header: 'Lý Do' },
-          { field: 'ngayKt', header: 'Ngày' },
-          { field: 'hinhThuc', header: 'Hình Thức' },
-          { field: 'status', header: 'Trạng Thái' }
+          { field: 'tenKtkl', header: 'KHEN THUONG' },
+          { field: 'lyDo', header: 'LY DO' },
+          { field: 'ngayKt', header: 'NGAY' },
+          { field: 'hinhThuc', header: 'HINH THUC' },
+          { field: 'status', header: 'TRANG THAI' }
       ];
-
       this.exportColumns = this.cols.map(item => ({title: item.header, dataKey: item.field}));
     }
     exportPdf(){
 
     }
-
     exportExcel(){
       import("xlsx").then(xlsx => {
         const worksheet = xlsx.utils.json_to_sheet(this.khenthuong);
@@ -126,15 +123,15 @@ export class KhenthuongComponent extends BaseComponent implements OnInit {
           FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
       });
     }
-      next() {
+    next() {
       this.first = this.first + this.rows;
-      }
-      prev() {
+    }
+    prev() {
           this.first = this.first - this.rows;
-      }
-      reset() {
-          this.first = 0;
-      }
+    }
+    reset() {
+        this.first = 0;
+    }
       isLastPage(): boolean {
           return this.khenthuongs ? this.first === (this.khenthuongs.length - this.rows): true;
       }
@@ -166,6 +163,7 @@ export class KhenthuongComponent extends BaseComponent implements OnInit {
       this.lgModal.show();
     }
     save(val: khenthuong) {
+
       console.log(val);
       if (this.hiddenID == 0) {
           this.coreService.postKT(val).subscribe(res => {

@@ -15,6 +15,10 @@ import { FileNotFoundComponent } from '../shared/file-not-found/file-not-found.c
 import { GiaovienComponent } from './giaovien/giaovien.component';
 import { KhoaComponent } from './khoa/khoa.component';
 import { GiangdayComponent } from './giangday/giangday.component';
+import { TracuuComponent } from './tracuu/tracuu.component';
+// import { TkgvkhoaComponent } from './tracuu/tkgvkhoa/tkgvkhoa.component';
+// import { TkgvnuComponent } from './tracuu/tkgvnu/tkgvnu.component';
+// import { TracuuComponent } from './dashboard/tracuu/tracuu.component';
 // import { DangkigdComponent } from './giangday/dangkigd/dangkigd.component';
 // import { KhenthuongComponent } from './giangday/khenthuong/khenthuong.component';
 // import { HocvanComponent } from './giangday/hocvan/hocvan.component';
@@ -27,7 +31,19 @@ export const mainRoutes: Routes = [
       {
         path: '',
         component: DashboardComponent,
+        // // path: 'tra-cuu',
+        // loadChildren: () =>
+        // import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      // canActivate: [RoleGuard],
+      // data: { roles: [Role.Admin] },
       },
+      // {
+      //   path: 'tra-cuu',
+      //   loadChildren: () =>
+      //   import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+      // // canActivate: [RoleGuard],
+      // // data: { roles: [Role.Admin] },
+      // },
       {
         path: 'not-found',
         component: FileNotFoundComponent,
@@ -70,6 +86,13 @@ export const mainRoutes: Routes = [
           import('./khoa/khoa.module').then((m) => m.KhoaModule),
         // canActivate: [RoleGuard],
         // data: { roles: [Role.Admin, Role.User] },
+      },
+      {
+        path: 'tracuu',
+        loadChildren: () =>
+          import('./tracuu/tracuu.module').then((m) => m.TracuuModule),
+        // canActivate: [RoleGuard],
+        // data: { roles: [Role.Admin, Role.User] },
       }
 
     ],
@@ -84,6 +107,11 @@ export const mainRoutes: Routes = [
     GiaovienComponent,
     KhoaComponent,
     GiangdayComponent,
+    DashboardComponent,
+    TracuuComponent,
+    // TkgvkhoaComponent,
+    // TkgvnuComponent,
+    // TracuuComponent,
     // DangkigdComponent,
     // KhenthuongComponent,
     // HocvanComponent

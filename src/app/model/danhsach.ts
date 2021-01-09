@@ -13,7 +13,7 @@ export class dscanbo{
             gioiTinh   :    number ;
             matKhau   :   string  ;
             dienThoai   :string;
-            mail   :string;
+            email   :string;
             chucDanh   :string;
             soTaiKhoan   :string;
             status   :  number   ;
@@ -38,6 +38,8 @@ export class dsphongkhoa{
     ghiChu   :   string  ;
     ngayTao   :   Date  ;
     nguoiTao   :   string  ;
+    value: string;
+    viewValue: string;
 }
 export class dsbomon{
   maBmtt : string ;
@@ -52,6 +54,7 @@ export class dsbomon{
   ghiChu : string ;
   ngayTao : Date ;
   nguoiTao : string ;
+  tenPhongKhoa   :   string  ;
 }
 export interface Product {
   // id?:string;
@@ -91,7 +94,7 @@ export interface Product {
           nguoiTao ?  :   string  ;
 }
 export class dsbacluong{
-    MaBac : number ;
+    maBac : number ;
           tenBac : string ;
           heSoBacLg : number ;
           status : number ;
@@ -102,6 +105,7 @@ export class dsbacluong{
 export class dsluong{
   maLuong : number ;
   maBac : number ;
+  tenBac : string ;
   mucLuong : number ;
   luongCb : number ;
   luongPc : number ;
@@ -119,12 +123,16 @@ export class dskhenthuong{
 	  maHp  : string ;
 	  ngayDk:  Date;
 	  ghiChu: string ;
-	  status: number;
+    status: number;
+    hoVaTen  ? :  string   ;
+
 
   }
   export class giaoviencn{
+
       maGvcn: number;
       maLop: string ;
+      hoVaTen:  string   ;
       maCbgv: string ;
       batDau:  Date;
       ketThuc:  Date;
@@ -136,7 +144,8 @@ export class dskhenthuong{
   }
   export class hopdongld{
     maHd: number;
-	  maCbgv: string ;
+    maCbgv: string ;
+    hoVaTen: string;
 	  loaiHd: string;
 	  tuNgay:  Date;
 	  denNgay:  Date;
@@ -154,24 +163,25 @@ export class dskhenthuong{
 	  status: number;
 
   }
-    export class lophoc{
-    maLop: string;
-	  tenLop: string ;
-	  maNganhHoc: string;
-	  maKhoaQuanLy: string ;
-	  nienKhoa: string ;
-	  trinhDo: number;
-	  he: number;
-	  ngayNhapHoc:  Date;
-	  siSo: number;
-	  trangThai: number;
-	  ghiChu: string ;
-	  ngayTao:  Date;
-	  nguoiTao: string ;
-  }
+  export class lophoc{
+      maLop: string;
+      tenLop: string ;
+      maNganhHoc: string;
+      maKhoaQuanLy: string ;
+      nienKhoa: string ;
+      trinhDo: number;
+      he: number;
+      ngayNhapHoc:  Date;
+      siSo: number;
+      trangThai: number;
+      ghiChu: string ;
+      ngayTao:  Date;
+      nguoiTao: string ;
+    }
   export class lylich{
     maLl: number;
-	  maCbgv: string ;
+    maCbgv: string ;
+    hoVaTen: string;
 	  tenLl: string;
 	  loaiLl: string ;
 	  linkBaiBao: string ;
@@ -233,4 +243,8 @@ export class dskhenthuong{
 	  tdngoaiNgu: string;
 	  soNamDay: string ;
 	  status: number;
+  }
+  interface Semester {
+    value: string;
+    viewValue: string;
   }

@@ -1,0 +1,48 @@
+<div id="content" class="app-content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Khoa</a></li>
+                <li class="breadcrumb-item active">Theo Khoa</li>
+            </ul>
+            <hr class="mb-4" />
+            <div class="nav-search">
+                <select class='select-option' #mySelect (change)='SelectSemester(mySelect.value)'>
+                  <option selected value="CNTT">Công nghệ thông tin</option>
+                      <option value="CNM">cÔNG NGHẸ MAY</option>
+                      <option value="L">Luật</option>
+                      <option value="NN">Ngoại Ngữ</option>
+                </select>
+            </div>
+            <table class="table table-striped table-bordered">
+                <thead style="text-align: center;">
+                    <tr>
+                        <th scope="col">STT</th>
+                        <th scope="col">Bộ môn</th>
+                        <th scope="col">Tên giáo viên</th>
+                        <th scope="col">Số điện thoại </th>
+                        <th scope="col">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td style="text-align: center;">fa-rotate-180</td>
+                        <td style="text-align: center;">dsfsd</td>
+                        <td style="text-align: center;">fsdfg</td>
+                        <td>fgdhgfj</td>
+                        <td style="text-align: center;">dgfdg</td>
+                    </tr>
+                    <tr *ngFor="let item of dscanbos, let i =index">
+                        <td style="text-align: center;">{{i+1}}</td>
+                        <td style="text-align: center;" name>{{ item.maBmtt}}</td>
+                        <td style="text-align: center;">{{ item.hoVaTen}}</td>
+                        <td>{{ item.dienThoai }}</td>
+                        <td style="text-align: center;">{{ item.email }}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit {
                   {
                     name:'Phiếu thu',
                     url:'',
-                    icon:'receipts',
+                    icon:'file-invoice-dollar',
                     childs:[{
                       name:'Quản lý phiếu thu',url:'/phieuthu/phieuthu'
                     }
@@ -33,7 +33,7 @@ export class SidebarComponent implements OnInit {
                   {
                     name:'Giáo viên',
                     url:'',
-                    icon:'address-book',
+                    icon:'chalkboard-teacher',
                     childs:[{
                         name:'Quản lý giáo viên',url:'/giaovien/giaovien'
                       },
@@ -56,7 +56,7 @@ export class SidebarComponent implements OnInit {
                   {
                     name:'Khoa',
                     url:'',
-                    icon:'archway',
+                    icon:'school',
                     childs:[{
                       name:'QL Phòng Khoa',url:'/khoa/phongkhoa'
                     },
@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit {
                   {
                     name:'Giảng Dạy',
                     url:'',
-                    icon:'archway',
+                    icon:'book-reader',
                     childs:[{
                       name:'Đăng Kí Lich',url:'/giangday/dangkigd'
                     },
@@ -79,6 +79,20 @@ export class SidebarComponent implements OnInit {
                     },
                     {
                       name:'Khen Thưởng Kỉ Luật',url:'/giangday/khenthuong'
+                    },
+                  ]},
+                  {
+                    name:'Tra Cứu',
+                    url:'',
+                    icon:'search',
+                    childs:[{
+                      name:'Tra Cứu',url:'/tracuu/tracuu1'
+                    },
+                    {
+                      name:'Thống kê',url:'/tracuu/tkgvkhoa'
+                    },
+                    {
+                      name:'Số Lượng Nhân Sự',url:'/tracuu/tkgvnu'
                     },
                   ]}
                 ];

@@ -7,6 +7,7 @@ import { catchError, first, map, tap } from 'rxjs/operators';
 import { dsluong ,dscanbo, dsphongkhoa, dsbomon} from '../model/danhsach';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs';
+import { User } from '@app/models';
 
 
 @Injectable({
@@ -47,25 +48,25 @@ export class CoreService {
 // -------------------------------Phan Trang------------------------//
 // Phân trang Bộ môn
     getCustomersSmall() {
-      return this._http.get<any>(this.host +'/api/CanBoGiangViens')
+      return this._http.get<any>(this.host +'/api/BoMonTrungTams')
           .toPromise()
           .then(res => <dsbomon[]>res.data)
           .then(data => { return data; });
     }
     getCustomersMedium() {
-      return this._http.get<any>(this.host +'/api/CanBoGiangViens')
+      return this._http.get<any>(this.host +'/api/BoMonTrungTams')
           .toPromise()
           .then(res => <dsbomon[]>res.data)
           .then(data => { return data; });
     }
     getCustomersLarge() {
-      return this._http.get<any>(this.host +'/api/CanBoGiangViens')
+      return this._http.get<any>(this.host +'/api/BoMonTrungTams')
           .toPromise()
           .then(res => <dsbomon[]>res.data)
           .then(data => { return data; });
     }
     getCustomersXLarge() {
-      return this._http.get<any>(this.host +'/api/CanBoGiangViens')
+      return this._http.get<any>(this.host +'/api/BoMonTrungTams')
           .toPromise()
           .then(res => <dsbomon[]>res.data)
           .then(data => { return data; });
@@ -174,25 +175,25 @@ export class CoreService {
     // --------------------------Mới thêm ngày 22/12----------
     // Phân trang Hợp đồng
     getCustomersSmallHD() {
-      return this._http.get<any>(this.host +'api/TblHopDongLds')
+      return this._http.get<any>(this.host +'api/HopDongLds')
           .toPromise()
           .then(res => <hopdongld[]>res.data)
           .then(data => { return data; });
     }
     getCustomersMediumHD() {
-      return this._http.get<any>(this.host +'/api/TblHopDongLds')
+      return this._http.get<any>(this.host +'/api/HopDongLds')
           .toPromise()
           .then(res => <hopdongld[]>res.data)
           .then(data => { return data; });
     }
     getCustomersLargeHD() {
-      return this._http.get<any>(this.host +'/api/TblHopDongLds')
+      return this._http.get<any>(this.host +'/api/HopDongLds')
           .toPromise()
           .then(res => <hopdongld[]>res.data)
           .then(data => { return data; });
     }
     getCustomersXLargeHD() {
-      return this._http.get<any>(this.host +'/api/TblHopDongLds')
+      return this._http.get<any>(this.host +'/api/HopDongLds')
           .toPromise()
           .then(res => <hopdongld[]>res.data)
           .then(data => { return data; });
@@ -454,7 +455,7 @@ export class CoreService {
       );
     }
     updateGD( id : any, obj: dangkilich): Observable<dangkilich> {
-      const url = `${this.host}/api/TblDkgiangDays`;
+      const url = `${this.host}/api/DkgiangDays`;
       obj.maDkgd=id;
       return this._http
         .put<dangkilich>(url + "/" + id, obj)
@@ -479,13 +480,13 @@ export class CoreService {
       let cloneHeader: any ={};
       cloneHeader['Content-Type'] = 'application/json';
       const  headerOptions = new HttpHeaders(cloneHeader);
-      return this._http.get<hopdongld[]>(this.host +'/api/TblHopDongLds', {headers: headerOptions}).pipe(
+      return this._http.get<hopdongld[]>(this.host +'/api/HopDongLds', {headers: headerOptions}).pipe(
         tap(receivedMovies => console.log(`receivedMovies =${JSON.stringify(receivedMovies)}`)),
       catchError(error =>of([]))
       );
     }
     postHD(obj: hopdongld): Observable<hopdongld> {
-      const url = `${this.host}/api/TblHopDongLds`;
+      const url = `${this.host}/api/HopDongLds`;
       return this._http
         .post<hopdongld>(url, obj)
         .pipe(
@@ -495,7 +496,7 @@ export class CoreService {
         );
     }
     getbyidHD(id: any): Observable<hopdongld>{
-      const url = `${this.host}/api/TblHopDongLds`;
+      const url = `${this.host}/api/HopDongLds`;
       return this._http.get<hopdongld>(url+ "/" + id).pipe(
         map(res => {
           return res;
@@ -503,7 +504,7 @@ export class CoreService {
       );
     }
     updateHD( id : any, obj: hopdongld): Observable<hopdongld> {
-      const url = `${this.host}/api/TblHopDongLds`;
+      const url = `${this.host}/api/HopDongLds`;
       obj.maHd=id;
       return this._http
         .put<hopdongld>(url + "/" + id, obj)
@@ -514,7 +515,7 @@ export class CoreService {
         );
     }
     deleteHD(id: any){
-      const url = `${this.host}/api/TblHopDongLds`;
+      const url = `${this.host}/api/HopDongLds`;
       return this._http
         .delete<hopdongld>(url +"/" + id)
         .pipe(
@@ -627,7 +628,7 @@ export class CoreService {
       let cloneHeader: any ={};
         cloneHeader['Content-Type'] = 'application/json';
         const  headerOptions = new HttpHeaders(cloneHeader);
-      return this._http.get<dsbomon[]>(this.host +'/api/BoMonTrungTams', {headers: headerOptions}).pipe(
+      return this._http.get<dsbomon[]>(this.host +'/api/BoMonTrungTams/dsBoMonTrungTam', {headers: headerOptions}).pipe(
         tap(receivedMovies=>console.log(`receivedMovies =${JSON.stringify(receivedMovies)}`)),
         catchError(error=>of([]))
       )
@@ -720,8 +721,177 @@ export class CoreService {
         })
       );
   }
+  // -------Lương----------------//
+  getdsL(): Observable<dsluong[]>{
+    let cloneHeader: any ={};
+    cloneHeader['Content-Type'] = 'application/json';
+    const  headerOptions = new HttpHeaders(cloneHeader);
+    return this._http.get<dsluong[]>(this.host +'/api/Luongs', {headers: headerOptions}).pipe(
+      tap(receivedMovies => console.log(`receivedMovies =${JSON.stringify(receivedMovies)}`)),
+    catchError(error =>of([]))
+    );
+  }
+  postL(obj: dsluong): Observable<dsluong> {
+    const url = `${this.host}/api/Luongs`;
+    return this._http
+      .post<dsluong>(url, obj)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  getbyidL(id: any): Observable<dsluong>{
+    const url = `${this.host}/api/Luongs`;
+    return this._http.get<dsluong>(url+ "/" + id).pipe(
+      map(res => {
+        return res;
+      })
+    );
+  }
+  updateL( id : any, obj: dsluong): Observable<dsluong> {
+    const url = `${this.host}/api/Luongs`;
+    obj.maLuong=id;
+    return this._http
+      .put<dsluong>(url + "/" + id, obj)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  deleteL(id: any){
+    const url = `${this.host}/api/Luongs`;
+    return this._http
+      .delete<dsluong>(url +"/" + id)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+
+  // User //-------------------------------------//
+  getdsU(): Observable<User[]>{
+    let cloneHeader: any ={};
+    cloneHeader['Content-Type'] = 'application/json';
+    const  headerOptions = new HttpHeaders(cloneHeader);
+    return this._http.get<User[]>(this.host +'/api/authenticate', {headers: headerOptions}).pipe(
+      tap(receivedMovies => console.log(`receivedMovies =${JSON.stringify(receivedMovies)}`)),
+    catchError(error =>of([]))
+    );
+  }
+  postU(obj: User): Observable<User> {
+    const url = `${this.host}/api/authenticate/register`;
+    return this._http
+      .post<User>(url, obj)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  getbyidU(id: any): Observable<User>{
+    const url = `${this.host}/api/authenticate`;
+    return this._http.get<User>(url+ "/" + id).pipe(
+      map(res => {
+        return res;
+      })
+    );
+  }
+  updateU( id : any, obj: User): Observable<User> {
+    const url = `${this.host}/api/authenticate`;
+    obj.id=id;
+    return this._http
+      .put<User>(url + "/" + id, obj)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  deleteU(id: any){
+    const url = `${this.host}/api/authenticate`;
+    return this._http
+      .delete<User>(url +"/" + id)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
 
 
+  // ---------------------------Giáo Viên Bộ Môn----------------///
+  // ---------------------------Giáo Viên Bộ Môn----------------///
+  // ---------------------------Giáo Viên Bộ Môn----------------///
+
+  getdscanbo1(): Observable<dscanbo[]>{
+    let cloneHeader: any ={};
+      cloneHeader['Content-Type'] = 'application/json';
+      const  headerOptions = new HttpHeaders(cloneHeader);
+    return this._http.get<dscanbo[]>(this.host +'/api/CanBoGiangViens', {headers: headerOptions}).pipe(
+      tap(receivedMovies=>console.log(`receivedMovies =${JSON.stringify(receivedMovies)}`)),
+      catchError(error=>of([]))
+    )
+  }
+
+
+  getgvbykhoa(id: any): Observable<dscanbo>{
+    const url = `${this.host}/api/CanBoGiangViens`;
+    return this._http.get<dscanbo>(url + "/getgvbypk/"+ id).pipe(
+      map(res => {
+        return res;
+      })
+    );
+  }
+  postcanbo1(obj: dscanbo): Observable<dscanbo> {
+    const url = `${this.host}/api/CanBoGiangViens`;
+    return this._http
+      .post<dscanbo>(url, obj)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  getbyid1(id: any): Observable<dscanbo>{
+    const url = `${this.host}/api/CanBoGiangViens`;
+    return this._http.get<dscanbo>(url + "/get-by-id/"+ id).pipe(
+      map(res => {
+        return res;
+      })
+    );
+  }
+  updatecanbo1( id: any, obj: dscanbo): Observable<dscanbo> {
+    const url = `${this.host}/api/CanBoGiangViens`;
+    obj.maCbgv = id;
+    return this._http
+      .put<dscanbo>(url +"/" + id, obj)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  deletecanbo1(id: any){
+    const url = `${this.host}/api/CanBoGiangViens`;
+    return this._http
+      .delete<dscanbo>(url +"/" + id)
+      .pipe(
+        map(res => {
+          return res;
+        })
+      );
+  }
+  getbyidDSCB(id: any): Observable<dscanbo>{
+    const url = `${this.host}/api/CanBoGiangViens`;
+    return this._http.get<dscanbo>(url + "/dscanboluong").pipe(
+      map(res => {
+        return res;
+      })
+    );
+  }
 
 
 

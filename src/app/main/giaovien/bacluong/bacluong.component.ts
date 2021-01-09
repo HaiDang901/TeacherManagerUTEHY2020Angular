@@ -57,19 +57,24 @@ export class BacluongComponent extends BaseComponent implements OnInit  {
     this.lgModal.show();
   }
   ngOnInit(): void {
-    // this.getdsBL();
-    this._api.get('/api/BacLuongs').subscribe(res=>{
-    this.dsluong=res;
-    console.log(this.dsluong);});
+    this.getdsBL();
+    // this._api.get('/api/BacLuongs').subscribe(res=>{
+    // this.dsluong=res;
+    // console.log(this.dsluong);});
+    this.coreService.getCustomersLargeBL().then(customers => {
+      this.dsbl = customers;
+    });
 
 
     this.formsearch = this.fb.group({
-      'maBac': ['']
+      'maBac': [''],
+      'tenBac': [''],
     });
     this.search();
 
     this.coreService.getCustomersLargeBL().then(customers => this.dsbacluongs = customers);
     this.search();
+    this.coreService.getCustomersSmallBL().then(data => this.dsbl = data);
   }
   next() {
     this.first = this.first + this.rows;
@@ -124,7 +129,7 @@ export class BacluongComponent extends BaseComponent implements OnInit  {
     this.lgModal.show();
   }
   save(val: dsbacluong) {
-
+    console.log(val);
     if (this.hiddenID == 0) {
 
       this.apiService.postBL(val).subscribe(res => {
@@ -134,7 +139,7 @@ export class BacluongComponent extends BaseComponent implements OnInit  {
       });
     }
     else{
-      this.apiService.updateBL(val.MaBac, val).subscribe(res =>{
+      this.apiService.updateBL(this.doneSetupForm.maBac, val).subscribe(res =>{
         alert("Sửa thành công");
         this.lgModal.hide();
         this.getdsBL();

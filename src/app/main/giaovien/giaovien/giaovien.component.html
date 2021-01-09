@@ -2,12 +2,12 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Cán Bộ Giáo Viên </h1>
+                <h3>Danh sách</h3>
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-                    <li class="breadcrumb-item active">Giáo Viên </li>
+                    <li class="breadcrumb-item active">Cán Bộ </li>
                 </ol>
             </div>
         </div>
@@ -16,92 +16,80 @@
     <div class="nav-search">
         <p class="pull-right no-margin">
             <a (click)="showAdd()" class="btn btn-success btn-xs">
-                <i class="fa fa-plus"></i>&nbsp;Thêm Giáo Viên
+                <i class="fa fa-plus"></i>&nbsp;Thêm mới
             </a>
         </p>
     </div>
 </section>
 
-
-<!-- <p-toolbar styleClass="p-mb-4">
-    <ng-template pTemplate="left">
-        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success p-mr-2" (click)="openNew()"></button>
-        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
-    </ng-template>
-
-    <ng-template pTemplate="right">
-        <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Import" chooseLabel="Import" class="p-mr-2 p-d-inline-block"></p-fileUpload>
-        <button pButton pRipple label="Export" icon="pi pi-upload" class="p-button-help"></button>
-    </ng-template>
-</p-toolbar>
-
-<p-table #dt [value]="dscb" [rows]="10" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" [(selection)]="selectedProducts" [rowHover]="true" dataKey="id" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-    [showCurrentPageReport]="true">
-    <ng-template pTemplate="caption">
-        <div class="p-d-flex p-ai-center p-jc-between">
-            <h5 class="p-m-0">Manage Products</h5>
-            <span class="p-input-icon-left">
-              <i class="pi pi-search"></i>
-              <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')" placeholder="Search..." />
-          </span>
-        </div>
-    </ng-template> -->
-
 <!-- Main content -->
 <section class="content app-content">
-
     <!-- Default box -->
     <div class="card card-solid">
         <div class="card-body pb-0">
             <div class="row d-flex align-items-stretch">
-                <!-- PAGE CONTENT BEGINS -->
-                <div class="col-xs-12">
-                    <p-panel header="Tìm kiếm" [ngStyle]="{'margin-top': '2px', 'font-size': '15px'}">
-                        <form class="form-horizontal" role="form" [formGroup]="formsearch" (ngSubmit)="search()">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label no-padding-right" style="font-size: 15px;"> Mã Giáo Viên </label>
-                                <div class="col-sm-11">
-                                    <input formControlName="maCbgv" type="text" placeholder="Mã Giáo Viên" style="font-size: 15px;padding: 10px;border: 1px solid #dee2e6;" />
-                                </div>
+                <div class="col-xs-12" style="margin-top: -50px;">
+
+                    <p-table selectionMode="single" #dt2 [columns]="cols" selectionMode="multiple" [(selection)]="selectedProducts" [value]="dscanbos" dataKey="maCbgv" styleClass="p-datatable-dscanbos" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} tới {last} of {totalRecords} mục"
+                        [globalFilterFields]="['maCbgv','maPk','maBmtt','hoVaTen','gioiTinh','email','dienThoai', 'queQuan', 'tonGiao','trinhDo', 'quyen','status']">
+                        <ng-template pTemplate="caption" class="p-d-flex">
+                            <div class="p-d-flex">
+                                <span class="p-input-icon-left p-ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text" (input)="dt2.filterGlobal($event.target.value, 'contains')" placeholder="Search keyword" />
+                            </span>
                             </div>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label no-padding-right"></label>
-                                <div class="col-sm-11">
-                                    <button (click)="search()" class="btn btn-sm btn-primary">Tìm kiếm</button>
-                                </div>
+                            <div class="p-d-flex" style="float: right; margin-top: -50px">
+                                <button type="button" title="Xuất chọn lọc" style="width: 50px; height: 50px;" pButton pRipple icon="pi pi-file-o" (click)="dt2.exportCSV()" class="p-mr-2" pTooltip="CSV" tooltipPosition="bottom"></button>
+                                <button type="button" title="Xuất tất cả" style="width: 50px; height: 50px;" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success p-mr-2" pTooltip="XLS" tooltipPosition="bottom"></button>
+                                <button type="button" style="width: 50px; height: 50px;" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()" class="p-button-warning p-mr-2" pTooltip="PDF" tooltipPosition="bottom"></button>
                             </div>
-                        </form>
-                    </p-panel>
-                    <h3>Danh sách Giáo Viên </h3>
-                    <p-table selectionMode="single" [value]="dscb" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Hiển thị {first} tới {last} of {totalRecords} mục" [rowsPerPageOptions]="[10,20,30]">
+                        </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
                                 <th style="width: 60px; text-align: center;background: #343a40;color: white;">STT</th>
-                                <th style="width: 17%; text-align: center;background: #343a40;color: white;">Họ Tên </th>
-                                <th style="width: 22%;text-align: center;background: #343a40;color: white;">Email </th>
-                                <th style="width: 13%; text-align: center;background: #343a40;color: white;">SĐT</th>
+                                <th style="width: 21%; text-align: center;background: #343a40;color: white;">Họ Tên </th>
+                                <th style="width: 12%; text-align: center;background: #343a40;color: white;">Hình Ảnh </th>
+                                <th style="width: 14%; text-align: center;background: #343a40;color: white;">SĐT</th>
                                 <th style="width: 17%; text-align: center;background: #343a40;color: white;">Quê quán</th>
-                                <th style="width: 100px; text-align: center;background: #343a40;color: white;">Tác vụ</th>
+                                <th style="width: 10%; text-align: center;background: #343a40;color: white;">Quyền</th>
+                                <th style="width: 11%; text-align: center;background: #343a40;color: white;">Trang Thái</th>
+                                <th style="width: 115px; text-align: center;background: #343a40;color: white;">Tác vụ</th>
                             </tr>
                         </ng-template>
                         <ng-template pTemplate="body" let-item let-i="rowIndex">
                             <tr>
                                 <td style="width: 60px; text-align: center;">{{ i + 1 }}</td>
-
-                                <td>{{ item.hoVaTen }}</td>
-                                <td>{{ item.email }}</td>
-                                <td>{{ item.dienThoai }}</td>
-                                <td>{{ item.queQuan }}</td>
+                                <td field="hoVaTen">{{ item.hoVaTen }}</td>
+                                <td field="image"><img src="../../../../assets/img/ImgTeacher/{{ item.image }}" alt="{{item.trinhDo}}" height="105" width="90" /></td>
+                                <td field="dienThoai">{{ item.dienThoai }}</td>
+                                <td field="queQuan">{{ item.queQuan}}</td>
+                                <td field="quyen">
+                                    <input type="button" *ngIf="item.quyen != 1" name="quyen" value="User" />
+                                    <input type="button" *ngIf="item.quyen == 1" name="quyen" value="Admin" />
+                                </td>
+                                <td field="status" *ngIf="item.status == 1">
+                                    <label class="switch" style="pointer-events: none;left: 18px;">
+                                  <input type="checkbox" checked>
+                                  <span class="slider round"></span>
+                                </label>
+                                </td>
+                                <td field="status" *ngIf="item.status != 1">
+                                    <label class="switch" style="pointer-events: none;left: 18px;">
+                                  <input type="checkbox">
+                                  <span class="slider round"></span>
+                                </label>
+                                </td>
                                 <td class="action-col">
                                     <div class="btn-group">
-                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="ChiTiet(item.maCbgv)">
-                                            <i class="ace-icon fa fa-eye" style="color:rgb(40, 82, 218);"></i>
+                                        <button title="Xem chi tiết" class="btn btn-xs btn-white btn-default" (click)="ChiTiet(item.maCbgv)">
+                                          <i class="ace-icon fa fa-eye" style="color:rgb(40, 82, 218);"></i>
                                         </button>
-                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="showEdit(item.maCbgv)">
-                                            <i class="ace-icon fa fa-edit" style="color:rgb(40, 82, 218);"></i>
+                                        <button title="Sửa " class="btn btn-xs btn-white btn-default" (click)="showEdit(item.maCbgv)">
+                                          <i class="ace-icon fa fa-edit" style="color:rgb(40, 82, 218);"></i>
                                         </button>
-                                        <button title="" class="btn btn-xs btn-white btn-default" (click)="Delete(item.maCbgv)">
-                                            <i class="ace-icon fa fa-trash" style="color:rgb(40, 82, 218);"></i>
+                                        <button title="Xóa" class="btn btn-xs btn-white btn-default" (click)="Delete(item.maCbgv)">
+                                          <i class="ace-icon fa fa-trash" style="color:rgb(40, 82, 218);"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -130,16 +118,28 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-
-                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="isCreate">Chi tiết Giáo Viên</h4>
-                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="!isCreate">Sửa Giáo Viên</h4>
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="isCreate">Thông tin chi tiết</h4>
+                <h4 id="dialog-sizes-name1" class="modal-title pull-left" *ngIf="!isCreate">Sửa thông tin</h4>
                 <button type="button" class="close pull-right" (click)="lgModal.hide()" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
             <div class="modal-body">
                 <form #formdata="ngForm" class="form-horizontal utehy-form" (ngSubmit)="save(formdata.value)" *ngIf="doneSetupForm">
                     <div class="modal-body no-padding">
+                        <!-- <div class="form-group">
+                            <label class="control-label no-padding-right"> Hình Ảnh (
+                            <span style="color: red;">*</span>)
+                          </label>
+                            <p-fileUpload #file_image mode="advanced" [showUploadButton]="false" cancelLabel="Hủy" chooseLabel="Chọn ảnh" multiple="false" accept="image/*" maxFileSize="1000000">
+                                <ng-template pTemplate="content">
+                                    <img [(ngModel)]="doneSetupForm.image" name="image" *ngIf="doneSetupForm && doneSetupForm.image" style="height: 100px;width: 100px;" src="{{doneSetupForm.image }}">
+
+                                </ng-template>
+                            </p-fileUpload>
+
+                        </div> -->
+
                         <div class="form-group">
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Người Tạo</label>
@@ -157,10 +157,6 @@
                                 </div>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                        </div>
-
                         <div class="form-group">
                             <label class="col-sm-2 control-label no-padding-right"> Kinh nghiệm</label>
                             <div class="col-sm-12">
@@ -171,7 +167,7 @@
                         <div class="form-group">
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Mã giáo viên(<span
-                                  style="color: red;">*</span>)</label>
+                    style="color: red;">*</span>)</label>
                                 <div class="col-sm-10">
                                     <input type="hidden" name="hiddenID" [(ngModel)]="hiddenID" />
                                     <input type="text" name="maCbgv" [(ngModel)]="doneSetupForm.maCbgv" placeholder="Mã giáo viên  " />
@@ -179,7 +175,7 @@
                             </div>
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Mã phòng khoa(<span
-                                  style="color: red;">*</span>)</label>
+                    style="color: red;">*</span>)</label>
                                 <div class="col-sm-10">
                                     <input type="text" name="maPk" placeholder="Mã phòng khoa  " [(ngModel)]="doneSetupForm.maPk" />
                                 </div>
@@ -189,14 +185,14 @@
                         <div class="form-group">
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Mã bộ môn(<span
-                                  style="color: red;">*</span>) </label>
+                    style="color: red;">*</span>) </label>
                                 <div class="col-sm-10">
                                     <input type="text" name="maBmtt" placeholder="Mã bộ môn   " [(ngModel)]="doneSetupForm.maBmtt" />
                                 </div>
                             </div>
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Mã Ngạch Công Chức(<span
-                                  style="color: red;">*</span>)</label>
+                    style="color: red;">*</span>)</label>
                                 <div class="col-sm-10">
                                     <input type="number" name="maNgach" placeholder="Mã ngạch " [(ngModel)]="doneSetupForm.maNgach" />
                                 </div>
@@ -206,14 +202,14 @@
                         <div class="form-group">
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Mã Bậc Lương(<span
-                                  style="color: red;">*</span>)</label>
+                    style="color: red;">*</span>)</label>
                                 <div class="col-sm-10">
                                     <input type="number" name="maBac" placeholder="Mã bậc " [(ngModel)]="doneSetupForm.maBac" />
                                 </div>
                             </div>
                             <div class="col-sm-6" style="float: left;">
                                 <label class="col-sm-8 control-label no-padding-right"> Mã Trình Độ HV(<span
-                                  style="color: red;">*</span>)</label>
+                    style="color: red;">*</span>)</label>
                                 <div class="col-sm-10">
                                     <input type="number" name="maTdhv" placeholder="Mã trình độ " [(ngModel)]="doneSetupForm.maTdhv" />
                                 </div>
@@ -230,7 +226,7 @@
                         <div class="form-group" style="display: flex">
                             <div class="col-sm-5">
                                 <label class=""> Ngày Sinh(<span
-                                style="color: red;">*</span>)</label>
+                  style="color: red;">*</span>)</label>
                                 <input type="datetime-local" name="ngaySinh" [(ngModel)]="doneSetupForm.ngaySinh">
                                 <div *ngIf="submitted && f.ngaySinh.errors" class="invalid-feedback">
                                     <div *ngIf="f.ngaySinh.errors.required">Ngày Sinh</div>
@@ -289,30 +285,31 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-sm-5" *ngIf="doneSetupForm.gioiTinh != 1">
+                        <div class="form-group" style="display: flex">
+
+
+                            <div class="col-sm-5">
                                 <label class="">Giới Tính </label>
 
-                                <input type="text" name="gioiTinh" value="NAM" />
+                                <input type="text" *ngIf="doneSetupForm.gioiTinh != 1" name="gioiTinh" value="NAM" />
+                                <input type="text" *ngIf="doneSetupForm.gioiTinh == 1" name="gioiTinh" value="NỮ" />
+
                             </div>
-                            <div class="col-sm-5" *ngIf="doneSetupForm.gioiTinh == 1">
-                                <label class="">Giới Tính </label>
-
-                                <input type="text" name="gioiTinh" value="NỮ" />
+                            <div class="col-sm-5" style="margin-left: 65px;">
+                                <label class="">Trạng thái </label>
+                                <input type="number" name="status" min="0" max="3" [(ngModel)]="doneSetupForm.status" />
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-sm" (click)="Reset()">
-                            <i class="fa fa-bell"></i> Làm mới
-                          </button>
-                        <!-- <input type="submit" class="btn btn-success btn-sm btn-submit" value="save"> -->
+                        <i class="fa fa-bell"></i> Làm mới
+                      </button>
                         <button type="submit" class="btn btn-success btn-sm btn-submit">
-                          <i class="fa fa-save"></i>save</button>
+                      <i class="fa fa-save"></i>save</button>
                         <button type="button" class="btn btn-default btn-sm" (click)="lgModal.hide()" aria-label="Close">
-                            <i class="fa fa-times"></i> Đóng lại
-                          </button>
-
+                        <i class="fa fa-times"></i> Đóng lại
+                      </button>
                     </div>
                 </form>
 

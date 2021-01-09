@@ -225,6 +225,7 @@ export class ApiService {
       );
   }
   getbyidBL(id: any): Observable<dsbacluong>{
+
     return this._http.get<dsbacluong>(this.api_bac_luong + "/" + id).pipe(
       map(res => {
         return res;
@@ -232,6 +233,7 @@ export class ApiService {
     );
   }
   updateBL( id: any, obj: dsbacluong): Observable<dsbacluong> {
+    obj.maBac = id;
     return this._http.put<dsbacluong>(this.api_bac_luong + "/" + id, obj).pipe(
         map(res => {
           return res;
